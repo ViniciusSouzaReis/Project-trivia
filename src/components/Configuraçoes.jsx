@@ -5,7 +5,6 @@ class Configurações extends Component {
     return (
       <div className="teste">
         <h1 data-testid="settings-title"> Tela de configuração</h1>
-
       </div>
     );
   }

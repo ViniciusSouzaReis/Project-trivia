@@ -1,14 +1,14 @@
-const TOKEN = 'Token';
+const TOKEN = 'token';
 const TIMEOUT = 500;
 const SUCCESS_STATUS = 'OK';
 
-if (!JSON.parse(localStorage.getItem(TOKEN))) {
-  localStorage.setItem(TOKEN, JSON.stringify([]));
-}
+// if (!JSON.parse(localStorage.getItem(TOKEN))) {
+//   localStorage.setItem(TOKEN, JSON.stringify([]));
+// }
 const readToken = () => JSON.parse(localStorage.getItem(TOKEN));
 
 const saveToken = (token) => localStorage
-  .setItem(TOKEN, JSON.stringify(token));
+  .setItem(TOKEN, token);
 
 // --------------------------------------------------------------------
 // A função simulateRequest simula uma requisição para uma API externa
@@ -29,10 +29,10 @@ export const getToken = () => new Promise((resolve) => {
 });
 
 export const addToken = (token) => new Promise((resolve) => {
-  if (token) {
-    const favoriteToken = readToken();
-    saveToken([...favoriteToken, token]);
-  }
+  // if (token) {
+  // const favoriteToken = readToken();
+  saveToken(token);
+  // }
   simulateRequest(SUCCESS_STATUS)(resolve);
 });
 
