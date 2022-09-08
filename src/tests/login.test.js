@@ -20,7 +20,7 @@ describe('Login Page Test', () => {
     expect(settingsButton).toBeInTheDocument();
   })
 
-  test('Enter in pathname "/jogo"', () => {
+  test('Enter in pathname "/game"', () => {
     const { history } = renderWithRouter(<App />)
 
     const inputEmail = screen.getByTestId('input-gravatar-email');
@@ -35,7 +35,7 @@ describe('Login Page Test', () => {
 
     userEvent.click(submitButton);
     expect(submitButton).not.toBeDisabled
-    expect(history.location.pathname).toBe('/jogo');
+    expect(history.location.pathname).toBe('/game');
   })
   test('Enter in pathname "/configuracoes"', () => {
     const { history } = renderWithRouter(<App />)

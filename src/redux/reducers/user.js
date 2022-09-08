@@ -3,6 +3,7 @@ import { USER_LOGIN } from '../actions';
 const INITIAL_STATE = {
   email: '',
   user: '',
+  hash: '',
 };
 
 function user(state = INITIAL_STATE, action) {
@@ -12,6 +13,7 @@ function user(state = INITIAL_STATE, action) {
       ...state,
       email: action.email,
       user: action.user,
+      hash: action.hash,
     };
   default:
     return state;
