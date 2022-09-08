@@ -22,7 +22,7 @@ export default class Header extends Component {
     const urlHash = `https://www.gravatar.com/avatar/${hash}`;
     return (
       <div>
-        <img src={ urlHash } alt="hashImage" />
+        <img data-testid="header-profile-picture" src={ urlHash } alt="hashImage" />
         <p data-testid="header-player-name">{user}</p>
         <p data-testid="header-score">0</p>
       </div>
