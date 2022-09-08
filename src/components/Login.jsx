@@ -27,6 +27,7 @@ class Login extends Component {
       name: prevState.name,
       validationEmail: checkEmail,
     }));
+    userLogin(email, name);
   };
 
   validEmail = (email) => /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/.test(email);
