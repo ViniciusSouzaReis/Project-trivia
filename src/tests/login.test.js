@@ -47,7 +47,7 @@ describe('Login Page Test', () => {
 
     expect(screen.getByText(/tela/i)).toBeInTheDocument()
   })
-  test('Verify submits in the document', () => {
+  test('Verify fetch in the document', () => {
     const token = {
       response_code: 0,
       response_message: 'Token Generated Successfully!',
