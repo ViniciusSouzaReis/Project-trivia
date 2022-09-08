@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import '../Login.css';
 import { userLoginAction } from '../redux/actions';
+import { addToken } from '../services/saveToken';
 
 class Login extends Component {
   constructor() {
@@ -27,14 +28,23 @@ class Login extends Component {
       name: prevState.name,
       validationEmail: checkEmail,
     }));
-    userLogin(email, name);
+  };
+
+  handleClick = async () => {
+    const { email, name } = this.state;
+    const { dispatch } = this.props;
+    dispatch(userLoginAction(email, name));
+    const request = await fetch('https://opentdb.com/api_token.php?command=request');
+    const response = await request.json();
+    const result = response.token;
+    addToken(result);
   };
 
   validEmail = (email) => /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/.test(email);
 
   render() {
     const { email, name, validationEmail } = this.state;
-    const { userLogin } = this.props;
+    // const { userLogin } = this.props;
     const checkPasswordLength = 0;
     const checkDisable = !validationEmail || name.length <= checkPasswordLength;
     return (
@@ -57,12 +67,12 @@ class Login extends Component {
             value={ name }
             onChange={ this.handleChange }
           />
-          <Link to="/">
+          <Link to="/jogo">
             <button
               type="button"
               data-testid="btn-play"
               disabled={ checkDisable }
-              onClick={ () => userLogin(email, name) }
+              onClick={ this.handleClick }
             >
               Play
             </button>
@@ -78,11 +88,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  userLogin: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  userLogin: (email, user) => dispatch(userLoginAction(email, user)),
-});
-
-export default connect(null, mapDispatchToProps)(Login);
+export default connect()(Login);
