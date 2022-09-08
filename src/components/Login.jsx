@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import logo from '../trivia.png';
 import '../Login.css';
 import { userLoginAction } from '../redux/actions';
@@ -33,7 +34,8 @@ class Login extends Component {
   handleClick = async () => {
     const { email, name } = this.state;
     const { dispatch } = this.props;
-    dispatch(userLoginAction(email, name));
+    const newHash = md5(email).toString();
+    dispatch(userLoginAction(email, name, newHash));
     const request = await fetch('https://opentdb.com/api_token.php?command=request');
     const response = await request.json();
     const result = response.token;
@@ -67,7 +69,7 @@ class Login extends Component {
             value={ name }
             onChange={ this.handleChange }
           />
-          <Link to="/jogo">
+          <Link to="/game">
             <button
               type="button"
               data-testid="btn-play"
