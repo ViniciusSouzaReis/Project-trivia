@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Login from './components/Login';
-import Header from './components/Header';
+import Game from './components/Game';
 import Configuraçoes from './components/Configuraçoes';
 
 export default function App() {
@@ -9,7 +9,7 @@ export default function App() {
     <div>
       <Switch>
         <Route exact path="/" component={ Login } />
-        <Route exact path="/game" component={ Header } />
+        <Route exact path="/game" component={ Game } />
         <Route exact path="/configuracoes" component={ Configuraçoes } />
       </Switch>
     </div>
