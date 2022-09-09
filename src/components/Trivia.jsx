@@ -64,7 +64,7 @@ class Trivia extends Component {
                     <p data-testid="question-category">{trivia[counter].category}</p>
                     <p data-testid="question-text">{trivia[counter].question}</p>
                     <section data-testid="answer-options">
-                      {array2.map((e, index) => )}
+                      {array2.map((e, index) => ())}
                     </section>
                   </div>)
         )}
