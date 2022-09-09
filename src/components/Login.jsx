@@ -7,7 +7,7 @@ import logo from '../trivia.png';
 import '../Login.css';
 import { userLoginAction, getGameInfo } from '../redux/actions';
 import { addToken } from '../services/saveToken';
-import store from '../redux';
+// import store from '../redux';
 
 class Login extends Component {
   constructor() {
@@ -16,29 +16,29 @@ class Login extends Component {
     this.state = {
       email: '',
       name: '',
-      triviaState: {},
+      // triviaState: {},
       validationEmail: false,
     };
   }
 
-  componentDidMount() {
-    const state = store.getState();
-    this.setState({ triviaState: state.game.trivia });
-    const { triviaState } = this.state;
-    console.log(triviaState);
-  }
+  // componentDidMount() {
+  //   const state = store.getState();
+  //   this.setState({ triviaState: state.game.trivia });
+  //   const { triviaState } = this.state;
+  //   console.log(triviaState);
+  // }
 
-  componentDidUpdate(_, prevState) {
-    store.subscribe(() => {
-      const state = store.getState();
-      const { game: { trivia } } = state;
-      this.setState({ triviaState: trivia.response_code });
-      const { triviaState } = this.state;
-      if (prevState.triviaState !== triviaState) {
-        this.checkRende();
-      }
-    });
-  }
+  // componentDidUpdate(_, prevState) {
+  //   store.subscribe(() => {
+  //     const state = store.getState();
+  //     const { game: { trivia } } = state;
+  //     this.setState({ triviaState: trivia.response_code });
+  //     const { triviaState } = this.state;
+  //     if (prevState.triviaState !== triviaState) {
+  //       this.checkRende();
+  //     }
+  //   });
+  // }
 
   // componentDidUpdate(_, prevState) {
   //   const newStore = store.subscribe();
@@ -68,17 +68,12 @@ class Login extends Component {
     const request = await fetch('https://opentdb.com/api_token.php?command=request');
     const response = await request.json();
     const result = response.token;
-    dispatch(getGameInfo(result));
+    await dispatch(getGameInfo(result));
     addToken(result);
     history.push('/game');
   };
 
   validEmail = (email) => /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/.test(email);
-
-  checkRende() {
-    const { triviaState } = this.state;
-    console.log(triviaState);
-  }
 
   render() {
     const { email, name, validationEmail } = this.state;

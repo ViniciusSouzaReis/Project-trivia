@@ -4,36 +4,39 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 import Trivia from './Trivia';
 import logo from '../trivia.png';
-// import store from '../redux';
+import store from '../redux';
 // import { removeToken } from '../services/saveToken';
 
 export default class Game extends Component {
-  // constructor() {
-  //   super();
+  constructor() {
+    super();
 
-  //   this.state = {
-  //     trivia: {},
-  //   };
-  // }
+    this.state = {
+      trivia: {},
+    };
+  }
 
-  // componentDidMount() {
-  //   const state = store.getState();
-  //   this.setState({ trivia: state.game.trivia });
-  // }
+  componentDidMount() {
+    const state = store.getState();
+    this.setState({ trivia: state.game.trivia }, () => {
+      const { trivia } = this.state;
+      const getReponseNumber = trivia.response_code;
+      const magicNumber = 3;
+      const { history } = this.props;
+      if (getReponseNumber === magicNumber) {
+        history.push('/');
+        localStorage.removeItem('token');
+      }
+    });
+  }
 
   render() {
     const { history } = this.props;
-    // const { trivia } = this.state;
-    // const checkTrivia = trivia.response_code;
-    // const checkNumber = 0;
     return (
       <div className="App">
         <img src={ logo } className="App-logo" alt="logo" />
         <Header />
         <Trivia history={ history } />
-        {/* {checkTrivia === checkNumber
-          ? <Redirect to="/" />
-          : <Trivia history={ history } />} */}
       </div>
     );
   }
