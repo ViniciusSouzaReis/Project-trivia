@@ -21,22 +21,17 @@ class Trivia extends Component {
       array: [state.game.trivia.results[counter].correct_answer,
         ...state.game.trivia.results[counter].incorrect_answers],
     });
-    // let array = [state.game.trivia.results[0].correct_answer, ...state.game.trivia.results[0].incorrect_answers];
-    // array = array.map((e, index) => {
-    //   if (index === 0) {
-    //     return {
-    //       resposta: e,
-    //       valor: true,
-    //     };
-    //   }
-    //   return {
-    //     reposta: e,
-    //     valor: false,
-    //   };
-    // });
-    // array.sort(() => ((Math.random() > 0.5) ? 1 : -1));
-    // console.log(array);
   }
+
+  handleClick = () => {
+    const { counter } = this.state;
+    const NUMBER_FOUR = 4;
+    if (counter < NUMBER_FOUR) {
+      this.setState((estadoAnterior) => ({
+        counter: estadoAnterior.counter + 1,
+      }));
+    }
+  };
 
   render() {
     const { trivia, counter, array } = this.state;
@@ -64,7 +59,32 @@ class Trivia extends Component {
                     <p data-testid="question-category">{trivia[counter].category}</p>
                     <p data-testid="question-text">{trivia[counter].question}</p>
                     <section data-testid="answer-options">
-                      {array2.map((e, index) => ())}
+                      {array2.map((e, index) => (
+                        e.valor === true ? (
+                          <button
+                            type="button"
+                            data-testid="correct-answer"
+                            key={ 5 }
+                          >
+                            {e.resposta}
+                          </button>)
+                          : (
+                            <button
+                              type="button"
+                              data-testid={ ` wrong-answer-${index}` }
+                              key={ index }
+                            >
+                              {e.reposta}
+                            </button>
+                          )
+                      ))}
+                      <button
+                        type="button"
+                        onClick={ this.handleClick }
+                      >
+                        {' '}
+                        Proxima
+                      </button>
                     </section>
                   </div>)
         )}
@@ -74,23 +94,3 @@ class Trivia extends Component {
 }
 
 export default connect()(Trivia);
-
-//   <div>
-//   {(trivia.length !== 0
-//           && (
-//             <div>
-//               <p data-testid="question-category">{trivia[counter].category}</p>
-//               <p data-testid="question-text">{trivia[counter].question}</p>
-//               <section data-testid="answer-options">
-//                 <button type="button" data-testid="correct-answer">
-//                   {trivia[counter].correct_answer}
-//                 </button>
-//                 {trivia[counter].incorrect_answers.map((e, i) => (
-//                   <button type="button" data-testid={ `wrong-answer-${i}` } key={ i }>
-//                     {e}
-//                   </button>
-//                 ))}
-//               </section>
-//             </div>)
-//   )}
-// </div>;
