@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import logo from '../trivia.png';
 import '../Login.css';
-import { userLoginAction } from '../redux/actions';
+import { userLoginAction, getGameInfo } from '../redux/actions';
 import { addToken } from '../services/saveToken';
+import store from '../redux';
 
 class Login extends Component {
   constructor() {
@@ -15,9 +16,37 @@ class Login extends Component {
     this.state = {
       email: '',
       name: '',
+      triviaState: {},
       validationEmail: false,
     };
   }
+
+  componentDidMount() {
+    const state = store.getState();
+    this.setState({ triviaState: state.game.trivia });
+    const { triviaState } = this.state;
+    console.log(triviaState);
+  }
+
+  componentDidUpdate(_, prevState) {
+    store.subscribe(() => {
+      const state = store.getState();
+      const { game: { trivia } } = state;
+      this.setState({ triviaState: trivia.response_code });
+      const { triviaState } = this.state;
+      if (prevState.triviaState !== triviaState) {
+        this.checkRende();
+      }
+    });
+  }
+
+  // componentDidUpdate(_, prevState) {
+  //   const newStore = store.subscribe();
+  //   const { trivia } = this.state;
+  //   if (prevState.trivia !== totalExpenses) {
+  //     this.getTotalExpenses();
+  //   }
+  // }
 
   handleChange = ({ target }) => {
     const { name, value } = target;
@@ -33,16 +62,23 @@ class Login extends Component {
 
   handleClick = async () => {
     const { email, name } = this.state;
-    const { dispatch } = this.props;
+    const { dispatch, history } = this.props;
     const newHash = md5(email).toString();
     dispatch(userLoginAction(email, name, newHash));
     const request = await fetch('https://opentdb.com/api_token.php?command=request');
     const response = await request.json();
     const result = response.token;
+    dispatch(getGameInfo(result));
     addToken(result);
+    history.push('/game');
   };
 
   validEmail = (email) => /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/.test(email);
+
+  checkRende() {
+    const { triviaState } = this.state;
+    console.log(triviaState);
+  }
 
   render() {
     const { email, name, validationEmail } = this.state;
@@ -69,16 +105,14 @@ class Login extends Component {
             value={ name }
             onChange={ this.handleChange }
           />
-          <Link to="/game">
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ checkDisable }
-              onClick={ this.handleClick }
-            >
-              Play
-            </button>
-          </Link>
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ checkDisable }
+            onClick={ this.handleClick }
+          >
+            Play
+          </button>
           <Link to="/configuracoes">
             <button type="button" data-testid="btn-settings"> Configurações</button>
           </Link>
@@ -91,6 +125,7 @@ class Login extends Component {
 
 Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(Object).isRequired,
 };
 
 export default connect()(Login);

@@ -36,8 +36,9 @@ export const addToken = (token) => new Promise((resolve) => {
   simulateRequest(SUCCESS_STATUS)(resolve);
 });
 
-export const removeToken = (token) => new Promise((resolve) => {
-  const favoriteToken = readToken();
-  saveToken(favoriteToken.filter((s) => s.trackId !== token.trackId));
+export const removeToken = () => new Promise((resolve) => {
+  // const favoriteToken = readToken();
+  // saveToken(favoriteToken.filter((s) => s.trackId !== token.trackId));
+  storage.removeItem(TOKEN);
   simulateRequest(SUCCESS_STATUS)(resolve);
 });
