@@ -25,18 +25,16 @@ export default class Game extends Component {
       const { history } = this.props;
       if (getReponseNumber === magicNumber) {
         history.push('/');
-        localStorage.removeItem('token');
       }
     });
   }
 
   render() {
-    const { history } = this.props;
     return (
       <div className="App">
         <img src={ logo } className="App-logo" alt="logo" />
         <Header />
-        <Trivia history={ history } />
+        <Trivia />
       </div>
     );
   }
