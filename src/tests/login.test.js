@@ -3,6 +3,42 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from './helpers/renderWithRouterAndRedux';
 import App from '../App';
+import mockData from './helpers/mockData';
+import Feedback from '../pages/Feedback';
+
+const DATA = {
+  user: {
+    email: 'trybe@trybe.com',
+    user: 'trybe',
+    hash: 'b254d8c05b6e63c960686e2db0af90261df071643c25f18f7f2620b22fe3543f',
+  },
+  player: {
+    name: 'trybe',
+    assertions: 2,
+    score: 55,
+    gavatarEmail: 'trybe@trybe.com',
+  },
+  game: {
+    trivia: mockData,
+  },
+}
+
+const DATA_2 = {
+  user: {
+    email: 'trybe@trybe.com',
+    user: 'trybe',
+    hash: 'b254d8c05b6e63c960686e2db0af90261df071643c25f18f7f2620b22fe3543f',
+  },
+  player: {
+    name: 'trybe',
+    assertions: 5,
+    score: 55,
+    gavatarEmail: 'trybe@trybe.com',
+  },
+  game: {
+    trivia: mockData,
+  },
+}
 
 
 describe('Login Page Test', () => {
@@ -35,7 +71,7 @@ describe('Login Page Test', () => {
 
     userEvent.click(submitButton);
     expect(submitButton).not.toBeDisabled
-    expect(history.location.pathname).toBe('/game');
+    expect(history.location.pathname).toBe('/');
   })
   test('Enter in pathname "/configuracoes"', () => {
     const { history } = renderWithRouter(<App />)
@@ -74,4 +110,32 @@ describe('Login Page Test', () => {
 
     expect(global.fetch).toBeCalledWith('https://opentdb.com/api_token.php?command=request');
   })
+})
+
+describe('Testa o componente Feedback até 90%', () => {
+  test('Realização dos testes', () => {
+    const { history } = renderWithRouter(<Feedback />, {initialState: DATA });
+    
+    expect(screen.getByTestId('header-profile-picture')).toBeInTheDocument();
+
+    const btnPlay = screen.getByTestId("btn-play-again");
+    expect(btnPlay).toBeInTheDocument();
+    userEvent.click(btnPlay)
+
+    expect(history.location.pathname).toBe('/');
+
+    const btnRanking = screen.getByTestId("btn-ranking");
+    expect(btnRanking).toBeInTheDocument();
+    userEvent.click(btnRanking)
+
+    expect(history.location.pathname).toBe('/ranking');
+  })
+
+  // test('Teste 2', () => {
+  //   const { store } = renderWithRouter(<Feedback />, {initialState: DATA_2 });
+    
+  //   const wellDone = screen.getAllByTestId('feedback-text')
+  //   expect(wellDone).toBeInTheDocument();
+    
+  // })
 })
