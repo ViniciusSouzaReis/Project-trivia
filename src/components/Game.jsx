@@ -30,11 +30,12 @@ export default class Game extends Component {
   }
 
   render() {
+    const { history } = this.props;
     return (
       <div className="App">
         <img src={ logo } className="App-logo" alt="logo" />
         <Header />
-        <Trivia />
+        <Trivia history={ history } />
       </div>
     );
   }
